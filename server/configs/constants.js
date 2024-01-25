@@ -8,6 +8,8 @@ const dbUri = process.env.DB_URI
 const log = console.log
 const phrase = process.env.MNEMONIC
 const senderAddress = process.env.SENDER_ADDRESS
+const tokenId = process.env.TOKEN_ID
+const userAmount = process.env.USER_AMOUNT
 
 module.exports = {
     allowedIP,
@@ -16,5 +18,7 @@ module.exports = {
     dbUri,
     log,
     phrase,
-    senderAddress
+    senderAddress,
+    tokenId,
+    userAmount
 }

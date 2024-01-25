@@ -2,7 +2,7 @@ const { ChronikClient } = require('chronik-client');
 const utxolib = require('@bitgo/utxo-lib');
 const { getUtxosFromAddress } = require('../utils/getUtxosFromAddress');
 
-const {chronikInstance,log, senderAddress, phrase} = require('../configs/constants.js')
+const {chronikInstance,log, senderAddress, phrase, tokenId, userAmount} = require('../configs/constants.js')
 
 const {
     generateTokenTxInput,
@@ -18,7 +18,7 @@ const ClaimModel = require('../models/Claim');
 const sendEtoken = async (req, res) =>{
     try {
         
-        const {userAddress, tokenId, userAmount} = req.body
+        const {userAddress} = req.body
         
         // Prepare the wallet that will send the token
         // Retrieve XEC and SLP utxos from wallet
