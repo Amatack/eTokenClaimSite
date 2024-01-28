@@ -1,7 +1,7 @@
-import ClaimPage from "./claim/page";
+import Claim from "./claim/page";
 
 export default function Home() {
   return (
-    <ClaimPage></ClaimPage>
+    <Claim />
   );
 }
