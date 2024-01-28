@@ -61,7 +61,7 @@ const getEtokenInfo = async(req, res) =>{
         let amountWithDot = addDot(amount, decimals)
 
         return res.status(200).json({
-            "Etokens disponibles": amountWithDot,
+            "availableTokens": amountWithDot,
             "tokenId": tokenId,
             
         })
