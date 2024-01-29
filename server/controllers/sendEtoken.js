@@ -20,6 +20,19 @@ const sendEtoken = async (req, res) =>{
         
         const {userAddress} = req.body
         
+
+        const clientIp = req.ip
+
+        const foundClaim = await ClaimModel.findOne({userIp: clientIp})
+        log("foundClaim: ", foundClaim)
+
+        if(foundClaim){
+            res.status(401).json({
+                message: "Tu dirección ip ya ha reclamado",
+                error: true
+            })
+            return
+        }
         // Prepare the wallet that will send the token
         // Retrieve XEC and SLP utxos from wallet
 
@@ -107,7 +120,6 @@ const sendEtoken = async (req, res) =>{
         }
 
         const newClaim = new ClaimModel(claim)
-        log('newClaim: ', newClaim)
         await newClaim.save()
 
         res.status(200).json(broadcastResponse)

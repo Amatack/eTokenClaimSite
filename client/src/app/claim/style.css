@@ -1,5 +1,52 @@
+h2{
+    text-align: center;
+}
+
+.claim-page-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.eCash-address-input{
+    border: 0.1rem var(--primary-gradient-light) solid;
+    margin: 0.1rem;
+    padding: 0.5rem;
+    width: 80%;
+
+    background-color: var(--primary-gradient-dark);
+    color: white;
+}
+
+.eCash-address-input:focus{
+    outline: none;
+}
+
 .claim-page-button{
+    margin: 0.1rem;
+
     min-width: 50%;
-    width: 50%;
-    height: 1.5rem;
+    width: 80%;
+    border: 0;
+    padding: 0.5rem;
+
+    color: white;
+    background-color: cornflowerblue;
+}
+
+.claim-page-button:active{
+    background-color: var(--primary-gradient-light);
+    border: 0;
+}
+
+.transaction-executed-container{
+    border-radius: 0.5rem;
+    padding: 0.1rem;
+
+    background-color: var(--primary-gradient-light);
+}
+
+.transaction-executed-container>p{
+    margin: 0;
 }

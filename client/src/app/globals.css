@@ -7,6 +7,14 @@
    box-sizing: border-box;
  }
 
+:root{
+  --original-palette4: #280170;
+  
+  --primary-dark: #001137;
+  --primary-gradient-light: #0074C2;
+  --primary-gradient-neutro: #00ABE7;
+  --primary-gradient-dark: #273498;
+}
 
  html {
    

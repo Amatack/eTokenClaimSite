@@ -44,16 +44,16 @@ export default function Claim() {
     }
 
     return (
-        <div className='sign-in-form'>
+        <div >
             <h2>Claim Etoken</h2>
-                {txId === "" ?<form onSubmit={onSubmit} onChange={onChange}>
-                    <div className='form-group'>
-                        <input className='form-control'
-                        type="text"
-                        name="address"
-                        placeholder={"eCash Address"}
-                        defaultValue={formData.address}/>
-                    </div>
+                {txId === "" ?<form onSubmit={onSubmit} onChange={onChange} className='claim-page-form'>
+                    
+                    <input className='eCash-address-input'
+                    type="text"
+                    name="address"
+                    placeholder={"eCash Address"}
+                    defaultValue={formData.address}/>
+                    
         
                     <button 
                     className='claim-page-button'
@@ -61,10 +61,13 @@ export default function Claim() {
                     Claim eToken
                     </button>
                 </form>
-                :<p><a href={`https://explorer.e.cash/tx/${txId}`} target="_blank" rel="noopener noreferrer">
+                :(<div className='transaction-executed-container'>
+                    <p>Transaction executed successfully</p>
+                    <p><a href={`https://explorer.e.cash/tx/${txId}`} target="_blank" rel="noopener noreferrer">
                     Tx: {shortenedTxId}
                     </a>
-                </p>
+                    </p>
+                </div>)
                 }
     </div>
     )

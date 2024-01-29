@@ -50,13 +50,13 @@ export default function RootLayout({
             <h1 className={styles.h1}>eToken Claim Site!</h1>
             <div>
               <p className={styles.p} title={tokenId}>
-                Aquí tu puedes reclamar: {shortenedTokenId}
+                Here you can claim: {shortenedTokenId}
               </p>
               {/* <p className={styles.p}>
                 Reclamos hasta ahora: 
               </p> */}
               <p className={styles.p}>
-                Etokens disponibles: {availableTokens}
+                Available etokens: {availableTokens}
               </p>
 
               <p className={styles.p}>
