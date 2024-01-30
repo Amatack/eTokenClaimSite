@@ -1,14 +1,14 @@
-'use client'
-
 import { useState } from "react";
 import {toast} from 'react-hot-toast'
-import { sendEtoken } from "../api/claim/sendEtoken";
-import { getEtokenInfo } from "../api/getEtokenInfo/getEtokenInfo";
-import {shortenText} from "../utils/shortenText"
+import { sendEtoken } from "../../api/claim/sendEtoken";
+import { getEtokenInfo } from "../../api/getEtokenInfo/getEtokenInfo";
+import {shortenText} from "../../utils/shortenText"
 
 import "./style.css"
 
-export default function Claim({setAvailableTokens, availableTokens}) {
+const Claim = (props) => {
+
+    const {setAvailableTokens} = props
 
     const [txId, setTxId] = useState("")
     const [shortenedTxId, setShortenedTxId] = useState("")
@@ -98,6 +98,8 @@ export default function Claim({setAvailableTokens, availableTokens}) {
                         </p>
                 </div>)
                 }
-    </div>
+        </div>
     )
 }
+
+export default Claim
