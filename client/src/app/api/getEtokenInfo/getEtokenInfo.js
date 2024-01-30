@@ -11,7 +11,7 @@ export async function getEtokenInfo(userAddress){
         
         })
         if(res.status >= 200 && res.status < 300){
-            return {data: res.data, message: "Transaction executed successfully", error: false}
+            return {data: res.data, message: "etokens information displayed successfully", error: false}
         }else{
             return {message: "Error while try to connect to server",  error: true}
         }

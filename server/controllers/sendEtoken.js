@@ -28,7 +28,7 @@ const sendEtoken = async (req, res) =>{
 
         if(foundClaim){
             res.status(401).json({
-                message: "Tu dirección ip ya ha reclamado",
+                message: "Someone has already claimed from this IP",
                 error: true
             })
             return
@@ -121,6 +121,8 @@ const sendEtoken = async (req, res) =>{
 
         const newClaim = new ClaimModel(claim)
         await newClaim.save()
+
+        broadcastResponse.userAmount = userAmount
 
         res.status(200).json(broadcastResponse)
     } catch (err) {

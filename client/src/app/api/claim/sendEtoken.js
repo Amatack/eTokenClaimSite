@@ -23,7 +23,7 @@ export async function sendEtoken(userAddress){
             return {message: 'Error 504: Gateway Timeout', error: true}
         }else {
         
-        return {message: "Something went wrong", error: true}
+        return {message: err.response.data.message, error: true}
         }
     }
 }
