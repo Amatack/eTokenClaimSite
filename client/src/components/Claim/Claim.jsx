@@ -17,6 +17,13 @@ const Claim = (props) => {
 
     const [address, setAddress] = useState("")
 
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault(); 
+        
+        }
+    };
+
 
     const handleClick = () => {
         setIsVisible(false);
@@ -80,6 +87,7 @@ const Claim = (props) => {
                     className='eCash-address-input'
                     type="text"
                     name="address"
+                    onKeyDown={handleKeyPress}
                     placeholder={"eCash Address"}
                     defaultValue={address}/>
                     
