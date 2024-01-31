@@ -1,9 +1,8 @@
 import axios from "axios"
-//import { API_HOST } from "../../utils/constants";
+import { API_HOST } from "../../utils/constants";
 
-export async function getEtokenInfo(userAddress){
+export async function getEtokenInfo(){
     try {
-    const API_HOST = 'http://localhost:8080'
     const url = `${API_HOST}/v1/getEtokenInfo`
 
 
