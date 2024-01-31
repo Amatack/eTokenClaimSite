@@ -20,14 +20,12 @@ const Claim = (props) => {
     const handleKeyPress = (event) => {
         if (event.key === 'Enter') {
             event.preventDefault(); 
-        
         }
     };
 
-
     const handleClick = () => {
         setIsVisible(false);
-      };
+    };
 
     const onSubmit = async (e) =>{
         e.preventDefault();
