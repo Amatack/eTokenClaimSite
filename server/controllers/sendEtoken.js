@@ -23,6 +23,16 @@ const sendEtoken = async (req, res) =>{
 
         const clientIp = req.ip
 
+        const foundClaimAddress = await ClaimModel.findOne({eCashAddress: userAddress})
+
+        if(foundClaimAddress){
+            res.status(401).json({
+                message: "Someone has already claimed from this eCash Address",
+                error: true
+            })
+            return
+        }
+
         const foundClaim = await ClaimModel.findOne({userIp: clientIp})
         log("foundClaim: ", foundClaim)
 
