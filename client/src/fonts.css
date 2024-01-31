@@ -1,0 +1,13 @@
+@font-face {
+    font-family: 'Montserrat';
+    src: url('./fonts/Montserrat-Medium.tff') format('tff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Poppins'; 
+    src: url('./fonts/Poppins-Thin.tff') format('tff');
+    font-weight: normal;
+    font-style: normal;
+}

@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import {toast, Toaster} from 'react-hot-toast'
 
+
 import { getEtokenInfo } from "./api/getEtokenInfo/getEtokenInfo";
 import { shortenText } from "./utils/shortenText";
 /* import { montserrat, poppins } from "./fonts"; */
@@ -34,7 +35,7 @@ export default function App()
   return (
     <html lang="en">
       <body /* className={`${montserrat.className} antialiased`} */>
-
+        
         <main className={"main"}>
           <article className={"article"}>
             <h1 className={"h1" } >eToken Claim Site</h1>
