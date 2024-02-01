@@ -12,6 +12,7 @@ dbConnect()
 
 app.use(express.json());
 app.use(cors())
+app.set('trust proxy', true);
 
 async function verifyServer(req, res, next) {
     try {
