@@ -14,19 +14,6 @@ app.use(express.json());
 app.use(cors())
 app.set('trust proxy', true);
 
-async function verifyServer(req, res, next) {
-    try {
-    const clientIp = req.ip
-    log("clientIp: ", clientIp)
-    next()
-    } catch (error) {
-        res.status(500).send('Incomplete Verification');
-        console.log(error)    
-    }
-}
-
-app.use(verifyServer)
-
 app.use("/v1", routes)
 
 app.listen(PORT, ()=>{
