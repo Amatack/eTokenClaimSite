@@ -22,19 +22,24 @@ const sendEtoken = async (req, res) =>{
         
 
         const clientIp = req.ip
-
         const foundClaimAddress = await ClaimModel.findOne({eCashAddress: userAddress})
 
         if(foundClaimAddress){
-            res.status(401).json({
-                message: "Someone has already claimed from this eCash Address",
-                error: true
-            })
+            if(foundClaimAddress.vpn === false){
+                res.status(401).json({
+                    message: "Someone has already claimed from this eCash Address",
+                    error: true
+                })
+            }else{
+                res.status(401).json({
+                    message: "Using VPN is not allowed to claim",
+                    error: true
+                })
+            }
             return
         }
 
         const foundClaim = await ClaimModel.findOne({userIp: clientIp})
-        log("foundClaim: ", foundClaim)
 
         if(foundClaim){
             res.status(401).json({
@@ -126,7 +131,8 @@ const sendEtoken = async (req, res) =>{
 
         const claim = {
             eCashAddress: String(userAddress),
-            userIp: req.ip
+            userIp: req.ip,
+            vpn: false
         }
 
         const newClaim = new ClaimModel(claim)

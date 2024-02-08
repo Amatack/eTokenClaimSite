@@ -12,6 +12,11 @@ const Claim = new Schema(
             type: String,
             required: true,
             trim: true,
+        },
+        vpn:{
+            type: Boolean,
+            required: true,
+            trim: true,
         }
     },
     {
