@@ -77,7 +77,7 @@ const sendEtoken = async (req, res) =>{
         
         const tokenObj = {
             tokenId,
-            amountOfEtoken,
+            amountOfEtoken: String(amountOfEtoken/100),
             tokenReceiverAddress: userAddress,
         }
 
