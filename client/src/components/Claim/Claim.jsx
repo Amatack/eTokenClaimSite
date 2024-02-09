@@ -11,7 +11,9 @@ const Claim = (props) => {
     const {setAvailableTokens} = props
 
     const [txId, setTxId] = useState("")
+    const [txId2, setTxId2] = useState("")
     const [shortenedTxId, setShortenedTxId] = useState("")
+    const [shortenedTxId2, setShortenedTxId2] = useState("")
     const [isVisible, setIsVisible] = useState(true);
     
 
@@ -42,8 +44,11 @@ const Claim = (props) => {
             
                 if(res.error === false){
                     const shortenedText = shortenText(res.data.txid)
+                    const shortenedText2 = shortenText(res.data.txid2)
                     setTxId(res.data.txid)
+                    setTxId2(res.data.txid2)
                     setShortenedTxId(shortenedText)
+                    setShortenedTxId2(shortenedText2)
                 }else{
                     toast.error(res.message)
                 }
@@ -97,9 +102,13 @@ const Claim = (props) => {
                     </button>}
                 </form>
                 :(<div className='transaction-executed-container'>
-                    <p>✅ Transaction executed successfully</p>
+                    <p>✅Transactions executed successfully</p>
                         <p> <a href={`https://explorer.e.cash/tx/${txId}`} target="_blank" rel="noopener noreferrer">
                             Tx: {shortenedTxId}
+                            </a>
+                        </p>
+                        <p> <a href={`https://explorer.e.cash/tx/${txId2}`} target="_blank" rel="noopener noreferrer">
+                            Tx: {shortenedTxId2}
                             </a>
                         </p>
                 </div>)
