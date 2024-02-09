@@ -5,7 +5,7 @@ const { coinSelect } = require('ecash-coinselect');
 const { getUtxosFromAddress } = require('../utils/getUtxosFromAddress');
 const {convertXecToSatoshis } = require('../utils/convertXecToSatoshis')
 
-const {amountOfXec, chronikInstance,log, senderAddress, phrase, tokenId, amountOfEtoken} = require('../configs/constants.js')
+const {amountOfXec, chronikInstance,log, senderAddress, phrase, tokenId, amountOfEtoken, active} = require('../configs/constants.js')
 
 const {deriveWallet} = require('../utils/deriveWallet.js');
 const ClaimModel = require('../models/Claim');
@@ -29,6 +29,14 @@ const sendEtoken = async (req, res) =>{
         
         const clientIp = req.ip
         const foundClaimAddress = await ClaimModel.findOne({eCashAddress: userAddress})
+
+        if(active === "OFF"){
+            res.status(400).json({
+                message: "Sorry, the claim period for this coupon is over.",
+                error: true
+            })
+            return
+        }
 
         if(foundClaimAddress){
             if(foundClaimAddress.vpn === false){
