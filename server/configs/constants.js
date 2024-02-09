@@ -13,8 +13,6 @@ const tokenId = process.env.TOKEN_ID
 module.exports = {
     amountOfXec,
     amountOfEtoken,
-    allowedIP,
-    authHash,
     chronikInstance,
     dbUri,
     log,
