@@ -1,10 +1,8 @@
 const dotenv = require("dotenv")
 dotenv.config()
 
-const allowedIP = process.env.ALLOWED_IP
 const amountOfEtoken = process.env.AMOUNT_OF_ETOKEN
 const amountOfXec = process.env.AMOUNT_OF_XEC
-const authHash = process.env.AUTH_HASH
 const chronikInstance = process.env.CHRONIK_INSTANCE
 const dbUri = process.env.DB_URI
 const log = console.log
