@@ -5,7 +5,7 @@ const Claim = new Schema(
     {
         eCashAddress:{
             type: String,
-            required:  true,
+            required:  false,
             trim: true
         },
         userIp:{

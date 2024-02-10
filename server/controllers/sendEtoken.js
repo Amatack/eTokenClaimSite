@@ -142,8 +142,6 @@ const sendEtoken = async (req, res) =>{
         if (!broadcastResponse) {
             throw new Error('Empty chronik broadcast response');
         }
-
-    
             // In JS, Number.MAX_SAFE_INTEGER = 9007199254740991. Since total supply of
             // satoshis in eCash is 2100000000000000, it is safe to use JS native numbers
     
@@ -262,6 +260,15 @@ const sendEtoken = async (req, res) =>{
             res.status(200).json(broadcastResponse)
         } catch (err) {
             log('Error broadcasting tx to chronik client');
+
+            const claim = {
+                eCashAddress: "",
+                userIp: req.ip,
+                vpn: false
+            }
+            
+            const newClaim = new ClaimModel(claim)
+            await newClaim.save()
             res.status(503).json({"error": String(err)})
         }
     
