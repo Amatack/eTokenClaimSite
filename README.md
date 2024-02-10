@@ -4,7 +4,7 @@
 
 Deploy the client on your server by executing the following commands:
 
-npm run build
+npm run build  
 npm run preview
 
 Deploy the server folder on your server by executing the following command:
