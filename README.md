@@ -1,4 +1,4 @@
-# CLAIM SITE
+# ETOKEN CLAIM APP
 
 ## Deploy
 

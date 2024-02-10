@@ -143,8 +143,6 @@ const sendEtoken = async (req, res) =>{
             throw new Error('Empty chronik broadcast response');
         }
 
-        
-
     
             // In JS, Number.MAX_SAFE_INTEGER = 9007199254740991. Since total supply of
             // satoshis in eCash is 2100000000000000, it is safe to use JS native numbers

@@ -38,13 +38,14 @@ export default function App()
         
         <main className={"main"}>
           <article className={"article"}>
-            <h1 className={"h1" } >eToken Claim Site</h1>
+            <h1 className={"h1" } >eToken Claim App</h1>
             <div>
               <p className={"p"} title={tokenId}>
-                Here you can claim: {shortenedTokenId}
+                {/* Here you can claim: {shortenedTokenId} */}
+                eToken to claim: Carabana Resort Coupon (RCC)
               </p>
               <p className={"p"}>
-                Available etokens: {availableTokens}
+                Available eTokens: {availableTokens}
               </p>
               <Claim 
                 setAvailableTokens={setAvailableTokens}
