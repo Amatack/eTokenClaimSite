@@ -42,7 +42,7 @@ export default function App()
             <div>
               <p className={"p"} title={tokenId}>
                 {/* Here you can claim: {shortenedTokenId} */}
-                eToken to claim: Carabana Resort Coupon (RCC)
+                eToken to claim: Resort Carabana Coupon (RCC)
               </p>
               <p className={"p"}>
                 Available eTokens: {availableTokens}
