@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
-const { dbUri, log } = require('./configs/constants.js');
+const { database, dbUri, log } = require('./configs/constants.js');
 
 const dbConnect = () => {
     const DB_URI = dbUri || "mongodb://localhost:27017/eTokenClaimSite"
     mongoose.connect(DB_URI, {
-        dbName: "eTokenClaimSite",
+        dbName: database,
         useNewUrlParser: true,
         useUnifiedTopology: true
     },(err, res)=>{
