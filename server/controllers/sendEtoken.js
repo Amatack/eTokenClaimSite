@@ -9,6 +9,7 @@ const {amountOfXec, chronikInstance,log, senderAddress, phrase, tokenId, amountO
 
 const {deriveWallet} = require('../utils/deriveWallet.js');
 const ClaimModel = require('../models/Claim');
+const UnauthorizedIp = require('../models/UnauthorizedIp')
 const {
     generateTokenTxInput,
     generateTokenTxOutput,
@@ -50,6 +51,16 @@ const sendEtoken = async (req, res) =>{
                     error: true
                 })
             }
+            return
+        }
+
+        const foundVPNIp = await UnauthorizedIp.findOne({userIp: clientIp})
+
+        if(foundVPNIp){
+            res.status(401).json({
+                message: "VPN is not allowed",
+                error: true
+            })
             return
         }
 
