@@ -40,17 +40,10 @@ const sendEtoken = async (req, res) =>{
         }
 
         if(foundClaimAddress){
-            if(foundClaimAddress.vpn === false){
-                res.status(401).json({
-                    message: "Someone has already claimed from this eCash Address",
-                    error: true
-                })
-            }else{
-                res.status(401).json({
-                    message: "Using VPN is not allowed to claim",
-                    error: true
-                })
-            }
+            res.status(401).json({
+                message: "Someone has already claimed from this eCash Address",
+                error: true
+            })
             return
         }
 
