@@ -5,24 +5,24 @@ import {toast, Toaster} from 'react-hot-toast'
 
 
 import { getEtokenInfo } from "./api/getEtokenInfo/getEtokenInfo";
-import { shortenText } from "./utils/shortenText";
 /* import { montserrat, poppins } from "./fonts"; */
 
 export default function App()
   {
     const [availableTokens, setAvailableTokens] = useState("")
     const [tokenId, setTokenId] = useState("")
-    const [shortenedTokenId, setShortenedTokenId] = useState("")
+    const [tokenName, setTokenName] = useState("")
+    const [tokenTicker, setTokenTicker] = useState("")
 
     useEffect(()=>{
       getEtokenInfo()
         .then(res => {
           if(res.error === false){
-              
               setAvailableTokens(res.data.availableTokens)
-              const shortenedText = shortenText(res.data.tokenId)
+              setTokenName(res.data.tokenName)
+              setTokenTicker(res.data.tokenTicker)
               setTokenId(res.data.tokenId)
-              setShortenedTokenId(shortenedText)
+              
               return
           }
           toast.error(res.message)
@@ -41,8 +41,8 @@ export default function App()
             <h1 className={"h1" } >eToken Claim App</h1>
             <div>
               <p className={"p"} title={tokenId}>
-                {/* Here you can claim: {shortenedTokenId} */}
-                eToken to claim: Resort Carabana Coupon (RCC)
+                
+                eToken to claim: {tokenName} ({tokenTicker})
               </p>
               <p className={"p"}>
                 Available eTokens: {availableTokens}
