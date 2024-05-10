@@ -47,7 +47,6 @@ const getEtokenInfo = async(req, res) =>{
         console.log("slpUtxos: ",slpUtxos)
 
         const tokenInfo = await chronik.token(tokenId)
-        
         const decimals = tokenInfo.slpTxData.genesisInfo.decimals
         
         let slpUtxosFiltered = slpUtxos.filter(object => object.slpMeta.tokenId === tokenId);
@@ -62,6 +61,8 @@ const getEtokenInfo = async(req, res) =>{
 
         return res.status(200).json({
             "availableTokens": amountWithDot,
+            "tokenName": tokenInfo.slpTxData.genesisInfo.tokenName,
+            "tokenTicker": tokenInfo.slpTxData.genesisInfo.tokenTicker,
             "tokenId": tokenId,
             
         })
