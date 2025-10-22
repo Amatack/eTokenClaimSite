@@ -5,7 +5,7 @@ const active = process.env.ACTIVE
 const allowedByCors = process.env.ALLOWED_BY_CORS
 const amountOfEtoken = process.env.AMOUNT_OF_ETOKEN
 const amountOfXec = process.env.AMOUNT_OF_XEC
-const chronikInstance = process.env.CHRONIK_INSTANCE
+const chronikInstances = process.env.CHRONIK_INSTANCES
 const database = process.env.DATABASE
 const dbUri = process.env.DB_URI
 const log = console.log
@@ -18,7 +18,7 @@ module.exports = {
     allowedByCors,
     amountOfXec,
     amountOfEtoken,
-    chronikInstance,
+    chronikInstances,
     database,
     dbUri,
     log,
