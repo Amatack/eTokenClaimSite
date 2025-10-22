@@ -5,7 +5,7 @@ const { coinSelect } = require('ecash-coinselect');
 const { getUtxosFromAddress } = require('../utils/getUtxosFromAddress');
 const {convertXecToSatoshis } = require('../utils/convertXecToSatoshis')
 
-const {amountOfXec, chronikInstance,log, senderAddress, phrase, tokenId, amountOfEtoken, active} = require('../configs/constants.js')
+const {amountOfXec, chronikInstances,log, senderAddress, phrase, tokenId, amountOfEtoken, active} = require('../configs/constants.js')
 
 const {deriveWallet} = require('../utils/deriveWallet.js');
 const ClaimModel = require('../models/Claim');
@@ -68,7 +68,6 @@ const sendEtoken = async (req, res) =>{
         }
         // Prepare the wallet that will send the token
         // Retrieve XEC and SLP utxos from wallet
-
         const derivationPath = "m/44'/1899'/0'/0/0";
         //const derivationPath = "m/44'/145'/0'/0"
 
@@ -86,8 +85,8 @@ const sendEtoken = async (req, res) =>{
         }
 
         // Instantiate chronik-client
-        const chronik = new ChronikClient(chronikInstance);
-
+        const chronikInstancesArray = chronikInstances.split(' ')
+        const chronik = new ChronikClient(chronikInstancesArray);
         const combinedUtxos = await getUtxosFromAddress(
             chronik,
             wallet.address,
@@ -124,6 +123,7 @@ const sendEtoken = async (req, res) =>{
             tokenObj.tokenReceiverAddress,
             tokenObj.amountOfEtoken,
         );
+
         // update txBuilder object with outputs
         txBuilder = tokenTxOutputObj;
         
@@ -131,9 +131,7 @@ const sendEtoken = async (req, res) =>{
         const combinedInputUtxos = tokenTxInputObj.inputXecUtxos.concat(
             tokenTxInputObj.inputTokenUtxos,
         );
-        
         const rawTxHex = signAndBuildTx(combinedInputUtxos, txBuilder, wallet);
-    
     // Broadcast transaction to the network via the chronik client
     // sample chronik.broadcastTx() response:
     //    {"txid":"0075130c9ecb342b5162bb1a8a870e69c935ea0c9b2353a967cda404401acf19"}
@@ -174,8 +172,25 @@ const sendEtoken = async (req, res) =>{
             // This is due to chronik.script().utxos() returning:
             // a) an empty array if there are no utxos at the address; or
             // b) an array of one object with the key 'utxos' if there are utxos
-            const { utxos } = combinedUtxos2[0];
             log("combinedUtxos2: " ,combinedUtxos2)
+            const { utxos } = combinedUtxos2;
+            
+            // Filter out only token UTXOs (we allow unconfirmed XEC UTXOs)
+            const xecOnlyUtxos = utxos.filter(utxo => !utxo.token);
+            
+            log("xecOnlyUtxos:", xecOnlyUtxos);
+            
+            if (xecOnlyUtxos.length === 0) {
+                throw new Error('No XEC UTXOs available.');
+            }
+            
+            // Convert chronik UTXOs format to coinSelect format
+            // coinSelect expects 'value' as a Number, but chronik returns 'sats' as BigInt
+            const coinSelectUtxos = xecOnlyUtxos.map(utxo => ({
+                ...utxo,
+                value: Number(utxo.sats) // Convert BigInt to Number
+            }));
+            
             // ** Part 3. Collect enough XEC utxos (tx inputs) to pay for sendAmountInSats + fees **
     
             // Define the recipients (i.e. outputs) of this tx and the amounts in sats
@@ -186,9 +201,11 @@ const sendEtoken = async (req, res) =>{
                     address: userAddress,
                 },
             ];
+            
+            log("targetOutputs:", targetOutputs);
     
             // Call on ecash-coinselect to select enough XEC utxos and outputs inclusive of change
-            let { inputs, outputs } = coinSelect(utxos, targetOutputs);
+            let { inputs, outputs } = coinSelect(coinSelectUtxos, targetOutputs);
             log("inputs: ",inputs)
             // Add the selected xec utxos to the tx builder as inputs
             for (const input of inputs) {
@@ -233,7 +250,7 @@ const sendEtoken = async (req, res) =>{
                     utxoECPair, // keyPair
                     undefined, // redeemScript, typically used for P2SH addresses
                     HASHTYPES.SIGHASH_ALL | HASHTYPES.SIGHASH_FORKID, // hashType
-                    parseInt(thisUtxo.value), // value of this single utxo
+                    parseInt(thisUtxo.sats), // value of this single utxo - chronik uses 'sats'
                 );
             }
     
@@ -242,7 +259,6 @@ const sendEtoken = async (req, res) =>{
             const tx = txBuilder2.build();
             // Convert to raw hex for use in chronik
             const hex = tx.toHex();
-    
             // ** Part 7. Broadcast raw hex to the network via chronik **
     
             // Example successful chronik.broadcastTx() response:
@@ -264,6 +280,7 @@ const sendEtoken = async (req, res) =>{
             res.status(200).json(broadcastResponse)
         } catch (err) {
             log('Error broadcasting tx to chronik client');
+            console.error("Error details:", err);
 
             const claim = {
                 eCashAddress: "",

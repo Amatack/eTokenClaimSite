@@ -19,7 +19,7 @@ const signUtxosByAddress = (inputUtxos, wallet, txBuilder) => {
             utxoECPair, // keyPair
             undefined, // redeemScript
             hashTypes.SIGHASH_ALL | hashTypes.SIGHASH_FORKID, // hashType
-            parseInt(utxo.value), // value
+            parseInt(utxo.sats), // value - chronik returns 'sats' property (BigInt)
         );
     }
 

@@ -6,7 +6,7 @@ const routes = require("./routes/wallet.routes.js");
 const { allowedByCors, log } = require("./configs/constants.js");
 const {dbConnect} = require("./db.js")
 
-const PORT = 8080
+const PORT = 8090
 
 dbConnect()
 

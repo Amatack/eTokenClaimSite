@@ -43,7 +43,7 @@ const generateTokenTxInput = (
         for (let i = 0; i < totalXecUtxos.length; i++) {
             const thisXecUtxo = totalXecUtxos[i];
             totalXecInputUtxoValue = totalXecInputUtxoValue.plus(
-                new BigNumber(thisXecUtxo.value),
+                new BigNumber(thisXecUtxo.sats),
             );
             const vout = thisXecUtxo.outpoint.outIdx;
             const txid = thisXecUtxo.outpoint.txid;
@@ -77,11 +77,12 @@ const generateTokenTxInput = (
 
         if (tokenAction === 'SEND' || tokenAction === 'BURN') {
             // filter for token UTXOs matching the token being sent/burnt
+            // Note: We allow unconfirmed token UTXOs since they may come from a previous tx in the same session
             filteredTokenInputUtxos = totalTokenUtxos.filter(utxo => {
                 if (
                     utxo && // UTXO is associated with a token.
-                    utxo.slpMeta.tokenId === tokenId && // UTXO matches the token ID.
-                    !utxo.slpToken.isMintBaton // UTXO is not a minting baton.
+                    utxo.token.tokenId === tokenId && // UTXO matches the token ID.
+                    !utxo.token.isMintBaton // UTXO is not a minting baton.
                 ) {
                     return true;
                 }
@@ -96,7 +97,7 @@ const generateTokenTxInput = (
             // collate token UTXOs to cover the token amount being sent/burnt
             for (let i = 0; i < filteredTokenInputUtxos.length; i++) {
                 finalTokenAmountSpent = finalTokenAmountSpent.plus(
-                    new BigNumber(filteredTokenInputUtxos[i].tokenQty),
+                    new BigNumber(filteredTokenInputUtxos[i].token.atoms.toString()),
                 );
                 txBuilder.addInput(
                     filteredTokenInputUtxos[i].outpoint.txid,
@@ -119,7 +120,7 @@ const generateTokenTxInput = (
             }
         }
     } catch (err) {
-        console.log(`generateTokenTxInput() error: ` + err);
+        console.error(`generateTokenTxInput() error: ` + err);
         throw err;
     }
 
@@ -201,7 +202,7 @@ const generateTokenTxOutput = (
             );
         }
     } catch (err) {
-        console.log(`generateTokenTxOutput() error: ` + err);
+        console.error(`generateTokenTxOutput() error: ` + err);
         throw err;
     }
 
@@ -213,7 +214,7 @@ const generateSendOpReturn = (tokenUtxos, sendQty) => {
         if (!tokenUtxos || !sendQty) {
             throw new Error('Invalid send token parameter');
         }
-        const tokenId = tokenUtxos[0].slpMeta.tokenId;
+        const tokenId = tokenUtxos[0].token.tokenId;
         const decimals = 2;
         // account for token decimals
         const finalSendTokenQty = new BigNumber(sendQty).times(10 ** decimals);
@@ -222,7 +223,7 @@ const generateSendOpReturn = (tokenUtxos, sendQty) => {
         // Calculate the total amount of tokens owned by the wallet.
         const totalTokens = tokenUtxos.reduce(
             (tot, txo) =>
-                tot.plus(new BigNumber(txo.slpToken.amount)),
+                tot.plus(new BigNumber(txo.token.atoms)),
             new BigNumber(0),
         );
 
@@ -247,10 +248,9 @@ const generateSendOpReturn = (tokenUtxos, sendQty) => {
                 new slpMdm.BN(finalSendTokenQtyStr),
             ]);
         }
-
         return { script, outputs };
     } catch (err) {
-        console.log('Error in generateSendOpReturn(): ' + err);
+        console.error('Error in generateSendOpReturn(): ' + err);
         throw err;
     }
 };
@@ -278,7 +278,7 @@ const generateGenesisOpReturn = configObj => {
 
         return script;
     } catch (err) {
-        console.log('Error in generateGenesisOpReturn(): ' + err);
+        console.error('Error in generateGenesisOpReturn(): ' + err);
         throw err;
     }
 };
@@ -360,20 +360,20 @@ const parseChronikUtxos = (chronikUtxos) => {
             slpUtxos: [],
         };
     }
-    const chronikUtxosTrimmed = chronikUtxos[0].utxos;
+    const chronikUtxosTrimmed = chronikUtxos.utxos;
 
     try {
         // Separate SLP utoxs from XEC utxos
         for (let i = 0; i < chronikUtxosTrimmed.length; i += 1) {
             const thisUtxo = chronikUtxosTrimmed[i];
-            if (thisUtxo.slpToken) {
+            if (thisUtxo.token) {
                 slpUtxos.push(thisUtxo);
             } else {
                 xecUtxos.push(thisUtxo);
             }
         }
     } catch (err) {
-        console.log(`parseChronikUtxos(): Error parsing chronik utxos.`);
+        console.error(`parseChronikUtxos(): Error parsing chronik utxos.`);
         throw err;
     }
 
